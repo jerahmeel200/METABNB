@@ -1,32 +1,35 @@
-import Navbar from "./components/Navbar";
-import Home from "./components/Home";
-import Footer from "./components/Footer";
-import PlaceToStay from "./components/PlaceToStay";
-
-import {
-  BrowserRouter as Router,
-  Routes, Route, Link
-} from "react-router-dom"
-
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Footer from "./layout/Footer";
+import Header from "./layout/Header";
+import Wallet from "./layout/Wallet";
+import Home from "./pages/Home";
+import PlaceToStay from "./pages/PlaceToStay";
 
 function App() {
-  return (
-    <>
-      <Router>
-        <div>
-          <Navbar />
-        </div>
-        <Routes>
-          <Route path="/placetostay" element={<PlaceToStay />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
+  const [connectWallet, setConnectWallet] = useState(false);
 
-        <div>
-          <Footer />
-        </div>
+  const showConnectWallet = () => {
+    setConnectWallet(true);
+  };
+
+  const hideConnectWallet = () => {
+    setConnectWallet(false);
+  };
+
+  return (
+    <main>
+      <Router>
+        <Header onShow={showConnectWallet} />
+        {connectWallet && <Wallet onHide={hideConnectWallet} />}
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/place-to-stay" element={<PlaceToStay />} />
+        </Routes>
+        <Footer />
       </Router>
-    </>
-  )
+    </main>
+  );
 }
 
 export default App;
